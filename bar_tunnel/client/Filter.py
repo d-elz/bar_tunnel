@@ -1,30 +1,9 @@
 
-from argparse import Namespace
 import os
 import hashlib
-from twisted.internet import ssl, reactor , defer
-#HTTP Reguest
-import urllib2
-import requests
-import json
-
-import base64
-import random
-from Crypto.Hash import SHA
-from Crypto import Random
 
 #Our Repos
-from bar_tunnel.common.db import Bardb
-from bar_tunnel.client.operations import DatabaseOperationClient
-from bar_tunnel.common import aes , rsa
 import bar_tunnel.common.generate_keys as gen
-from bar_tunnel.common import signature
-import bar_tunnel.common.rsa as rsa
-from bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
-
-#Free port
-import socket
-from contextlib import closing
 
 class baseFilterer():
 

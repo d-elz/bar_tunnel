@@ -1,19 +1,5 @@
 from twisted.internet import ssl, reactor , defer
 from twisted.internet.protocol import Factory, Protocol ,ClientFactory , ServerFactory
-from twisted.protocols.basic import NetstringReceiver
-import bar_tunnel.common.generate_keys as gen
-
-##### Redirect to TOR Network imports
-from txsocksx.client import SOCKS5ClientEndpoint
-from twisted.internet.endpoints import TCP4ClientEndpoint , SSL4ClientEndpoint
-
-from txtorcon import endpoints as tor_endpoint
-##### SSL - TLS import
-from txsocksx.tls import TLSWrapClientEndpoint
-
-import time
-import optparse
-import os
 
 # Server Host:port
 CLIENT_HOST = "127.0.0.1"

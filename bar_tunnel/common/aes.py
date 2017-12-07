@@ -1,6 +1,4 @@
-from Crypto import Random
 from Crypto.Cipher import AES
-from binascii import unhexlify
 import base64
 
 def aes_encrypt(skey, m):

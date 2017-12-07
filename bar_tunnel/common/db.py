@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import sqlite3
-import logging
 
 # TODO: Grab this from constants file.
 DBFILE = "bar_tunnel/db/database.db"

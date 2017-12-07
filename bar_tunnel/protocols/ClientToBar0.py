@@ -1,23 +1,5 @@
 from twisted.internet import ssl, reactor , defer
 from twisted.internet.protocol import Factory, Protocol ,ClientFactory , ServerFactory
-from twisted.protocols.basic import NetstringReceiver
-
-import bar_tunnel.common.generate_keys as gen
-from  bar_tunnel.protocols.Listener import ListenerProtocol , ListenerFactory
-from  bar_tunnel.protocols.ClientToBarServer import ClientToBarServerProtocol , ClientToBarServerFactory
-from bar_tunnel.client import Filter as filt
-
-##### Redirect to TOR Network imports
-from txsocksx.client import SOCKS5ClientEndpoint
-from twisted.internet.endpoints import TCP4ClientEndpoint , SSL4ClientEndpoint
-
-from txtorcon import endpoints as tor_endpoint
-##### SSL - TLS import
-from txsocksx.tls import TLSWrapClientEndpoint
-
-import time
-import optparse
-import os
 
 """
 Protocol for the communication with BAR Coordinator(BAR0).

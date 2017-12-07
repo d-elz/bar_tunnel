@@ -1,5 +1,4 @@
-from twisted.web import proxy
-from twisted.web import http, proxy
+
 from twisted.internet import protocol
 
 class BarWebProxyServer(protocol.Protocol):
