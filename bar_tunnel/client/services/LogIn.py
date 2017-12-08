@@ -1,11 +1,11 @@
 from twisted.internet import ssl, reactor , defer
-
+import socket
 
 #Our repositories
-from  bar_tunnel.protocols.Listener import ListenerProtocol , ListenerFactory
-from  bar_tunnel.protocols.ClientToBar0 import ClientToBar0Protocol , ClientToBar0Factory
+from  bar_tunnel.protocols.Listener import  ListenerFactory
+from  bar_tunnel.protocols.ClientToBar0 import  ClientToBar0Factory
 from  bar_tunnel.protocols.BarWebProxy import BarWebProxyFactory
-
+from  bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
 from bar_tunnel.client.Filter import *
 
 
@@ -19,8 +19,6 @@ from bar_tunnel.client.services.Services import baseService
 import bar_tunnel.common.generate_keys as gen
 
 import urllib2
-
-from txsocksx.tls import TLSWrapClientEndpoint
 
 
 class LogInService(baseService):
