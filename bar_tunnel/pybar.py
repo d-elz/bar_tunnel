@@ -100,7 +100,7 @@ Start Tor first "sudo systemctl start tor "
 
     return parser
 
-BAR0 = urllib2.urlopen('http://ip.42.pl/raw').read() #put domain name when is uploaded
+BAR0 = "195.251.225.87"#urllib2.urlopen('http://ip.42.pl/raw').read() #put domain name when is uploaded
 
 def register(args):
 

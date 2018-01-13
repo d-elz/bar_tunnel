@@ -12,6 +12,8 @@ from bar_tunnel.common.db import Bardb
 from bar_tunnel.client.services.Services import baseService
 from bar_tunnel.client.operations import DatabaseOperationClient
 from bar_tunnel.common import aes
+from bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
+
 import bar_tunnel.common.rsa as rsa
 
 import urllib2
@@ -45,7 +47,7 @@ class BCPService(baseService):
         print "Construction BAR Onion routing .Please wait..."
         doc = DatabaseOperationClient()
 
-        DOMAIN = urllib2.urlopen('http://ip.42.pl/raw').read() + ":2400" # use domain name insted(django project)
+        DOMAIN = "195.251.225.87" + ":2400" # use domain name insted(django project)
 
         #Get the Public List and the Active LIst from the BAR0(from the bulletin board of the BAR OFFICIAL site))
         url = 'http://'+ DOMAIN +'/bar/active_client/'
@@ -147,11 +149,10 @@ class BCPService(baseService):
 
         # g) Encrypt ( [pkj,kij,lij] , k'ij, l'ij , m ) to get (lij,cij)
         plaintextj = args.lij + "||||"+ args.lij_new + "||||"+ args.kij_new +  "||||" + message
-        cj = aes.aes_encrypt(args.kij,plaintextj)
 
+        cj = aes.aes_encrypt(args.kij,plaintextj)
         # h) Compute cy = enc-bridge_key-cy[lij,cj] using [id , IPj , b_keyj ] in Active List
         plaintexty = args.lij + "||||" + cj
-
         cy = rsa.encrypt(args.bridge_key_y,plaintexty)
         #bridge_pkey_y =open("/home/bar/GitHub2/tor_tunnel/keys/private_key.pem").read()
         #decrypt_data = rsa.decryption(bridge_pkey_y,cy)
@@ -176,6 +177,7 @@ class BCPService(baseService):
         message.
         """
         bar_route_args = self.bar_route(args)
+
         if bar_route_args != -1:
             encrypted_message = self.bar_route_encrypt_info(bar_route_args,args.message)
         else:
@@ -186,7 +188,6 @@ def bcp_conn(bcp_args):
 
     bcp = BCPService()
     constructing_route = bcp.format(bcp_args)
-
     if constructing_route != -1:
         broadcast_data = "BROADCAST||||" + constructing_route
         bar_server_factory = ClientToBarServerFactory(broadcast_data,"d")
