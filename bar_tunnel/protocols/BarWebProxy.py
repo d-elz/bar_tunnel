@@ -68,7 +68,7 @@ class BarWebProxyClient(proxy.Proxy):
     #requestFactory = BarWebProxyClientRequest
 
     def dataReceived(self,data):
-        print data
+        print "This is the data for bar server " , data
         print "Send data to bar net"
         args = Namespace()
         args.nym = self.proxy_factory.pseudonym

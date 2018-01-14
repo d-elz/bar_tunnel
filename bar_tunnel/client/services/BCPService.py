@@ -138,8 +138,8 @@ class BCPService(baseService):
         args.lix = str(lix)
         args.kix = str(kix)
 
-        doc.updata_list(args.lix,args.kix_new ,args.lix_new)
-        doc.updata_list(args.lij ,args.kij_new ,args.lij_new)
+        #doc.updata_list(args.lix,args.kix_new ,args.lix_new)
+        #doc.updata_list(args.lij ,args.kij_new ,args.lij_new)
         return args
 
 

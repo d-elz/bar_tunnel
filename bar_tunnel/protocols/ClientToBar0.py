@@ -44,7 +44,7 @@ class ClientToBar0Protocol(Protocol):
             if data.split("||||")[1] != "-1":
                 print "Bar0 Server : You successfull log in"
                 self.bar_server = data.split("||||")[1]
-                self.d.callback(self) # calling the bar_server_conn function of the tunnelling.py file to connect to
+                self.d.callback(self) # calling the bar_server_conn function  to connect to bar server
             elif data.split("||||")[1] == "-1":
                 print "Bar0 Server : You can t log in "
 
