@@ -56,7 +56,7 @@ class LogInService(baseService):
 
         # (c)Select a new bridge pair keys for the current session
         gen.generate_rsa_bridge_key(4096)
-        bridge_pk = self.read_file(self.dirc(__file__, "../../../keys" , "/bridge_public_key.pem"))
+        bridge_pk = self.read_file(self.dirc(__file__, "../../../keys" , "/bridge_private_key.pem"))
 
         # (d)Send the IPi , bridge key Bari.Clusteri
         #if args.listenport == 0: args.listenport = self.find_free_port(7000,7100,20)

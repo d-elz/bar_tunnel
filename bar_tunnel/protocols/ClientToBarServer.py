@@ -69,8 +69,8 @@ class ClientToBarServerProtocol(NetstringReceiver):
                     doc.updata_list(lix,kix_new,lix_new)
 
                     #Prepei na chekarei an einai client h server
-                    proxy_factory = BarWebProxyServerFactory( plaintext.split("||||")[3])
-                    reactor.connectTCP("127.0.0.1",8000,proxy_factory)
+                    #proxy_factory = BarWebProxyServerFactory( plaintext.split("||||")[3])
+                    #reactor.connectTCP("127.0.0.1",8000,proxy_factory)
 
         else:
             print "This message isn t for you .Dropping.."
