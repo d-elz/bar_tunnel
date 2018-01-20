@@ -124,7 +124,7 @@ def login(args):
     args.serverport = 443
     args.bar0 = BAR0
     args.service = "LogIn"
-    args.listenport = 0
+    #args.listenport = 0
 
     if not args.nym:
         print "You need to specify a pseudonym with --nym. Aborting..."

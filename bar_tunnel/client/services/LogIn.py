@@ -59,8 +59,8 @@ class LogInService(baseService):
         bridge_pk = self.read_file(self.dirc(__file__, "../../../keys" , "/bridge_public_key.pem"))
 
         # (d)Send the IPi , bridge key Bari.Clusteri
-        if args.listenport == 0: args.listenport = self.find_free_port(7000,7100,20)
-        if args.listenport == -1: exit(1) # if the find_free_port function returns -1 means that haven t find a free port within range
+        #if args.listenport == 0: args.listenport = self.find_free_port(7000,7100,20)
+        #if args.listenport == -1: exit(1) # if the find_free_port function returns -1 means that haven t find a free port within range
         IP = urllib2.urlopen('http://ip.42.pl/raw').read() + ":" + str(args.listenport)
         args.IP = IP
 
