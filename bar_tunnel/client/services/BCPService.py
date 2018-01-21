@@ -12,7 +12,7 @@ from bar_tunnel.common.db import Bardb
 from bar_tunnel.client.services.Services import baseService
 from bar_tunnel.client.operations import DatabaseOperationClient
 from bar_tunnel.common import aes
-from bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
+from  bar_tunnel.protocols.ClientToBarServer import trigger_bcp
 
 import bar_tunnel.common.rsa as rsa
 
@@ -190,8 +190,8 @@ def bcp_conn(bcp_args):
     constructing_route = bcp.format(bcp_args)
     if constructing_route != -1:
         broadcast_data = "BROADCAST||||" + constructing_route
-        bar_server_factory = ClientToBarServerFactory(broadcast_data,"d")
-        reactor.connectTCP(bcp_args.bar_server_host,int(bcp_args.bar_server_port),bar_server_factory)
+        trigger_bcp(broadcast_data)
+        #reactor.connectTCP(bcp_args.bar_server_host,int(bcp_args.bar_server_port),bar_server_factory)
     else:
         print "Something not works in bar route construction"
 

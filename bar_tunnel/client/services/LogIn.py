@@ -6,6 +6,7 @@ from  bar_tunnel.protocols.Listener import  ListenerFactory
 from  bar_tunnel.protocols.ClientToBar0 import  ClientToBar0Factory
 from  bar_tunnel.protocols.BarWebProxy import BarWebProxyFactory
 from  bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
+#from  bar_tunnel.protocols.ClientToBarServer import trigger_bcp
 from bar_tunnel.client.Filter import *
 
 
@@ -95,11 +96,16 @@ def bar_server_conn(bar0_factory):
     bar_server_factory.set_listener(listener_factory)
     listener = reactor.listenTCP(bar0_factory.login_args.listenport, listener_factory)
 
+    #Trigger the callback when construct the onion route and buffer the message to send it to bar server
+    #onion_defer = defer.Deferred()
+    #onion_defer.addCallback(trigger_bcp)
+
     #Proxy LIstener for Browser connection over HTTP
     proxyFaxtory = BarWebProxyFactory()
     proxyFaxtory.set_pseudonym(bar0_factory.login_args.nym)
     proxyFaxtory.set_public_key(bar0_factory.login_args.pk)
     proxyFaxtory.set_bar_server(bar0_factory.bar_server)
+    #proxyFaxtory.set_onion_defer(onion_defer)
     proxy = reactor.listenTCP(bar0_factory.login_args.proxyport, proxyFaxtory)
 
     print 'Proxy on %s.' % (proxy.getHost())
