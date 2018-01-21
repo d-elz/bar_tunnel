@@ -7,7 +7,16 @@ from bar_tunnel.client.operations import DatabaseOperationClient
 from bar_tunnel.protocols.ClientToClient import ClientToClientFactory , ClientToClientProtocol
 from  bar_tunnel.protocols.BarWebProxyServer import BarWebProxyServerFactory
 
+import time
+
+##### Redirect to TOR Network imports
+from argparse import Namespace
+
+buffer = []
+
 class ClientToBarServerProtocol(NetstringReceiver):
+
+
 
     def __init__(self , data , deffered , factory):
         self.data = data
@@ -26,6 +35,8 @@ class ClientToBarServerProtocol(NetstringReceiver):
         elif self.data[:5] == "LogIn":
             print "~~ Successfull Log In to Bar-Server at " +str(peer)
             self.sendString(self.data)
+            reactor.callInThread(self.delayMessage , self )
+
         else:
             print "You must specify a service : [BROADCAST] or [LogIn]"
             self.transport.loseConnection()
@@ -93,6 +104,26 @@ class ClientToBarServerProtocol(NetstringReceiver):
         print "~~ Disconnected from Bar-Server at " +str(peer)
         self.transport.loseConnection()
 
+    def delayMessage(self,connection):
+        while(True):
+            time.sleep(10)
+            if self.bufferIsLoaded():
+                connection.sendString(buffer[0])
+                buffer.remove(buffer[0])
+            else:
+                connection.sendString(self.dummyMessageGenerator())
+
+    def bufferIsLoaded(self):
+        if len(buffer)==0:
+            return False
+        else:
+            return True
+
+    def dummyMessageGenerator(self):
+        #constructing_route = format()
+        broadcast_data = "BROADCAST||||" + "COnstruction the oonion routin dummy message"
+        return broadcast_data
+
 
 class ClientToBarServerFactory(ClientFactory):
     #protocol = ClientToBarServerProtocol
@@ -134,6 +165,8 @@ def clientTOclient(data,client_host,client_port):
     client_to_client_factory = ClientToClientFactory(data)
     reactor.connectTCP(client_host,client_port,client_to_client_factory)
 
+def trigger_bcp(route):
+    buffer.append(route)
 
 if __name__ == '__main__':
     BarServer()
