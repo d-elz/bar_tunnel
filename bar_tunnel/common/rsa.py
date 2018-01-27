@@ -49,7 +49,7 @@ def decrypt(private_key , ciphertext):
     digest = SHA.new(plaintext[:-dsize]).digest()
     if digest==plaintext[-dsize:]:                # Note how we DO NOT look for the sentinel
         print "Decryption was correct."
-        return plaintext , True
+        return plaintext[:-dsize] , True
     else:
         print "Decryption was not correct."
         return plaintext , False

@@ -6,9 +6,10 @@ from  bar_tunnel.protocols.Listener import  ListenerFactory
 from  bar_tunnel.protocols.ClientToBar0 import  ClientToBar0Factory
 from  bar_tunnel.protocols.BarWebProxy import BarWebProxyFactory
 from  bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
-#from  bar_tunnel.protocols.ClientToBarServer import trigger_bcp
+from  bar_tunnel.client.services.ExchangeKey import ExchangeKeyService
 from bar_tunnel.client.Filter import *
-
+import requests
+import json
 
 ##### Redirect to TOR Network imports
 from argparse import Namespace
@@ -96,9 +97,11 @@ def bar_server_conn(bar0_factory):
     bar_server_factory.set_listener(listener_factory)
     listener = reactor.listenTCP(bar0_factory.login_args.listenport, listener_factory)
 
-    #Trigger the callback when construct the onion route and buffer the message to send it to bar server
-    #onion_defer = defer.Deferred()
-    #onion_defer.addCallback(trigger_bcp)
+    #Create a login object to inherita some neccesary function
+    loginserobject = LogInService()
+    exchange_key = ExchangeKeyService()
+    pseudonym = loginserobject.read_file(loginserobject.dirc(__file__, "../../../keys", "/pseudonym"))
+    exchange_key.decrypt_exchange_messages(pseudonym)
 
     #Proxy LIstener for Browser connection over HTTP
     proxyFaxtory = BarWebProxyFactory()
@@ -126,3 +129,11 @@ def login_service(args):
     login_args = login.service(args)
     login_conn(login_fil.format(login_args),login_args)
     reactor.run()
+
+def get_exchange_keys(nym):
+    DOMAIN = "195.251.225.87" + ":2400"  # use domain name insted(django project)
+    url = 'http://' + DOMAIN + '/bar/exchange_client?nym=' + nym
+    r = requests.get(url)
+    exchange_keys = json.loads(r.content)
+
+    return exchange_keys

@@ -89,6 +89,7 @@ class DatabaseOperationClient(Client):
             print "First time you communicate with this user!"
             self.insert_list(nym,pk,shared_key,label)
             #return True
+
     def updata_list(self ,label, shared_key_new , label_new):
         get_where_dict = { "label" : label ,}
         set_where_dict = { "shared_key" : shared_key_new ,

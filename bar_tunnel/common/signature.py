@@ -27,8 +27,10 @@ def verify(msg,public_key_path,signature):
     verifier = PKCS1_v1_5.new(key)
     if verifier.verify(h, sign):
         print "The signature is authentic."
+        return True
     else:
         print "The signature is not authentic."
+        return False
 
 if __name__ == '__main__':
     print "Sign func:"

@@ -16,6 +16,7 @@ class RegisterService(baseService):
         nym = args.nym
         pk = self.check_pk(args.pk)
 
+        self.write_file( self.dirc(__file__, "../../../keys" , "/pseudonym" ) , nym )
         args_info = Namespace()
         args_info.service = args.service
         args_info.nym = nym

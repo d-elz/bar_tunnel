@@ -18,7 +18,13 @@ class baseService():
     def read_file(self ,path):
         f = open(path)   # Make a new file in output mode >>>
         text = f.read()  # Read entire file into a string >>> text 'Hello\nworld\n'
+        f.close()
         return text
+
+    def write_file(self ,path,nym):
+        f = open(path,"w")   # Make a new file in output mode >>>
+        text = f.write(nym)  # Read entire file into a string >>> text 'Hello\nworld\n'
+        f.close()
 
     #Return a path of a file
     def dirc(self ,ex_file,back,file):
