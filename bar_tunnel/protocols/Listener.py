@@ -38,7 +38,10 @@ class ListenerProtocol(Protocol):
         if correct_decrypt:
             print "SENDING TO:" + str(self.bar_server) + ":" + str(self.bar_server_port)
             #print "BAR Server : " + str(self.bar_server) + ":" + str(self.bar_server_port)
-            trigger_bcp(broadcast_message(decrypt_data,self.bar_server,self.bar_server_port))
+            #broadcast_message(decrypt_data,self.bar_server,self.bar_server_port)
+            broadcast_data = "BROADCAST||||" + decrypt_data
+            trigger_bcp(broadcast_data)
+
         else:
             print "Wrong key or data!"
 
