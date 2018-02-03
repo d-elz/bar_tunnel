@@ -16,6 +16,9 @@ import time
 import optparse
 import os
 
+#import delay message
+from bar_tunnel.protocols.ClientToBarServer import trigger_bcp
+
 import bar_tunnel.common.rsa as rsa
 import requests
 import json
@@ -35,7 +38,7 @@ class ListenerProtocol(Protocol):
         if correct_decrypt:
             print "SENDING TO:" + str(self.bar_server) + ":" + str(self.bar_server_port)
             #print "BAR Server : " + str(self.bar_server) + ":" + str(self.bar_server_port)
-            broadcast_message(decrypt_data,self.bar_server,self.bar_server_port)
+            trigger_bcp(broadcast_message(decrypt_data,self.bar_server,self.bar_server_port))
         else:
             print "Wrong key or data!"
 
