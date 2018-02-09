@@ -24,6 +24,7 @@ class BCPService(baseService):
     @method bar_route_encrypt_info()
     @method broacast_communication_protocol()
     """
+    DOMAIN = "bar0.cs.unipi.gr"
     #Find if the user have change keys with friend
     def check_exchange_key(self ,nymi, nymj , pk):
         get_where_dict = {"nym" : nymj,}
@@ -47,14 +48,12 @@ class BCPService(baseService):
         print "Construction BAR Onion routing .Please wait..."
         doc = DatabaseOperationClient()
 
-        DOMAIN = "195.251.225.87" + ":2400" # use domain name insted(django project)
-
         #Get the Public List and the Active LIst from the BAR0(from the bulletin board of the BAR OFFICIAL site))
-        url = 'http://'+ DOMAIN +'/bar/active_client/'
+        url = 'http://'+ self.DOMAIN +'/bar/active_client/'
         r = requests.get(url)
         active_users = json.loads(r.content)
 
-        url = 'http://'+ DOMAIN +'/bar/public_client/'
+        url = 'http://'+ self.DOMAIN +'/bar/public_client/'
         r = requests.get(url)
         public_users = json.loads(r.content)
 
