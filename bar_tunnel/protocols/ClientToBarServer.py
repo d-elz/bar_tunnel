@@ -103,6 +103,7 @@ class ClientToBarServerProtocol(NetstringReceiver):
         peer = self.transport.getPeer()
         print "~~ Disconnected from Bar-Server at " +str(peer)
         self.transport.loseConnection()
+        #reactor.stop()
 
     def delayMessage(self,connection):
         while(True):

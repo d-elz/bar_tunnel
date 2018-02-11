@@ -92,7 +92,6 @@ class BCPService(baseService):
         bridge_key_y = ""
         for i in range(1,20): # make 20 tries , if not find a user with clusterj aboart
             pick_random_user = random.choice(active_users)
-            print pick_random_user.get("bar_server")
             if pick_random_user.get("bar_server") == clusterj:
                 IPy = pick_random_user.get("ip")
                 bridge_key_y = pick_random_user.get("bridge_pk")
@@ -105,7 +104,6 @@ class BCPService(baseService):
         #Entry User - Ux(Paper)
         db = Bardb()
         list_users = db.select_entries("List")
-
         #Find our cluster
         clusteri = self.compute_cluster(nymi,pki)
         lix = ""
@@ -153,9 +151,7 @@ class BCPService(baseService):
         # h) Compute cy = enc-bridge_key-cy[lij,cj] using [id , IPj , b_keyj ] in Active List
         plaintexty = args.lij + "||||" + cj
         cy = rsa.encrypt(args.bridge_key_y,plaintexty)
-        #bridge_pkey_y =open("/home/bar/GitHub2/tor_tunnel/keys/private_key.pem").read()
-        #decrypt_data = rsa.decryption(bridge_pkey_y,cy)
-        #print decrypt_data
+
         # i) Encrypt ( [pkx,kix,lix] , k'ix, l'ix , (IPy,Cy) ) to get (lix,cix)
         IP_Cy = args.IPy + "||||" + cy
         plaintextx = args.kix_new + "||||"+ args.lix_new + "||||"+ args.lix +  "||||" + IP_Cy

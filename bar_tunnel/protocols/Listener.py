@@ -49,6 +49,10 @@ class ListenerProtocol(Protocol):
 
     def connectionMade(self):
 
+        #Here we can make a web service request to bar0 to check
+        #if the user who sendthe message is in the active list
+        #If it is then is inside the bar network , if not we can t
+        #accept the message and we drop it
         print "Checking the connection from BAR Network"
         #if conn != BAR Network
         print "We accept connection only from BAR Network . Dropping..."
