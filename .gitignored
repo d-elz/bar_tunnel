@@ -1,0 +1,4 @@
+#Bar tunnel ignore files
+
+keys/
+bar_tunnel/db/
