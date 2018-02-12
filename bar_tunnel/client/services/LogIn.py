@@ -1,4 +1,4 @@
-from twisted.internet import ssl, reactor , defer
+from twisted.internet import reactor , defer
 import socket
 
 #Our repositories
@@ -8,12 +8,10 @@ from  bar_tunnel.protocols.BarWebProxy import BarWebProxyFactory
 from  bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory
 from  bar_tunnel.client.services.ExchangeKey import ExchangeKeyService
 from bar_tunnel.client.Filter import *
-import requests
-import json
 
 ##### Redirect to TOR Network imports
 from argparse import Namespace
-import base64
+
 import random
 
 #Our Repos
@@ -61,8 +59,6 @@ class LogInService(baseService):
         bridge_pk = self.read_file(self.dirc(__file__, "../../../keys" , "/bridge_private_key.pem"))
 
         # (d)Send the IPi , bridge key Bari.Clusteri
-        #if args.listenport == 0: args.listenport = self.find_free_port(7000,7100,20)
-        #if args.listenport == -1: exit(1) # if the find_free_port function returns -1 means that haven t find a free port within range
         IP = urllib2.urlopen('http://ip.42.pl/raw').read() + ":" + str(args.listenport)
         args.IP = IP
 
@@ -113,7 +109,7 @@ def bar_server_conn(bar0_factory):
 
     print 'Proxy on %s.' % (proxy.getHost())
     print 'Listening on %s.' % (listener.getHost())
-    #tor_conn(bar_server_factory,BAR_SERVER,BAR_SERVER_PORT)
+
     reactor.connectTCP(BAR_SERVER,BAR_SERVER_PORT,bar_server_factory)
 
 def login_conn(data_to_send,login_args):
@@ -129,11 +125,3 @@ def login_service(args):
     login_args = login.service(args)
     login_conn(login_fil.format(login_args),login_args)
     reactor.run()
-
-def get_exchange_keys(nym):
-    DOMAIN = "195.251.225.87" + ":2400"  # use domain name insted(django project)
-    url = 'http://' + DOMAIN + '/bar/exchange_client?nym=' + nym
-    r = requests.get(url)
-    exchange_keys = json.loads(r.content)
-
-    return exchange_keys

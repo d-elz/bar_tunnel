@@ -1,5 +1,5 @@
-from twisted.internet import ssl, reactor , defer
-from twisted.internet.protocol import Factory, Protocol ,ClientFactory , ServerFactory
+from twisted.internet import  reactor
+from twisted.internet.protocol import  Protocol ,ClientFactory
 
 """
 Protocol for the communication with BAR Coordinator(BAR0).

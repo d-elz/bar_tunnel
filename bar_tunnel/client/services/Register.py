@@ -1,4 +1,4 @@
-from twisted.internet import ssl, reactor , defer
+from twisted.internet import  reactor
 
 
 #Our repositories
@@ -25,7 +25,7 @@ class RegisterService(baseService):
         return args_info
 
 
-
+#Communication method -Establish connection with bar0 over TLS/SSL protocol
 def register_conn(data_to_send,register_args):
     base= baseService()
     factory = ClientToBar0Factory(data_to_send,"empty_defer","") # without a defer

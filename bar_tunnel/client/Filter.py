@@ -44,14 +44,14 @@ class baseFilterer():
             #print "Server : " ,cluster
         return cluster
 
-    def format(self ,args):
-        """
-        Here we format the data to ensure a specific format that can
-        manipulate by the bar0 and bar server .
-        """
-        pass
-
 class RegisterFilterer(baseFilterer):
+    """
+    For each service we make a filterer to format the data in a specific
+    manner that server can understand.Furthermore when we want to change
+    the format we just change this methods e.g
+    (args.service + "!!!!" + args.nym + "!!!!" ... )
+
+    """
     def format(self ,args):
 
         formated_data = args.service + "||||" + args.nym + "||||" + args.pk
@@ -59,20 +59,13 @@ class RegisterFilterer(baseFilterer):
         return formated_data
 
 class LogInFilterer(baseFilterer):
-
     def format(self ,args):
 
         formated_data = args.service + "||||" + args.nym + "||||" + args.pk + "||||" + args.bridge_pk + "||||" + args.IP + "||||" + args.cluster
 
         return formated_data
 
-class LogOutFilterer(baseFilterer):
-    def format(self ,args):
-        pass
-
 class ExchangeFilterer(baseFilterer):
-    """
-    """
 
     def format(self , args ):
 

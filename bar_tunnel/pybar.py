@@ -1,17 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, os, argparse
+import argparse
 
-from bar_tunnel.protocols import ClientToClient ,ClientToBarServer
-
-from bar_tunnel.common.db import Bardb
 from bar_tunnel.client.services.LogIn import login_service
 from bar_tunnel.client.services.Register import register_service
 from bar_tunnel.client.services.ExchangeKey import exchange_key_service
-from Crypto import Random
+
 import re
-import urllib2
 
 def parse_cli():
 
@@ -66,7 +62,6 @@ Start Tor first "sudo systemctl start tor "
     register_parser = subparsers.add_parser('register')
     login_parser = subparsers.add_parser('login')
     exchange_key_parser = subparsers.add_parser('exchange_key')
-    message_parser = subparsers.add_parser('message')
 
     register_parser.add_argument('--nym',  help='Your own unique pseudonym to register to Bar server', required=True , type = filter_nym)
     register_parser.add_argument('--pk', help='The path of your public key file . If you dont have leave it blank to auto genarate a key pair for you',type=file)
@@ -79,33 +74,18 @@ Start Tor first "sudo systemctl start tor "
     login_parser.add_argument('--pk', help='The path of your public key file.If you didn t import it -we did- and is inside keys folder',required=True,type=file)
     login_parser.add_argument('--listenport', help='This is the port for CLient to CLiet communication to forward the message to bar server',type=int)
     login_parser.add_argument('--proxyport', help='This is the proxy port for the bcp connection',type=int)
-    #login_parser.add_argument('--bar0',  help='The IP of the BAR server', required=True )
-
 
     exchange_key_parser.add_argument('--nym',  help='Your own unique pseudonym to register/login to Bar server', required=True , type = filter_nym)
     exchange_key_parser.add_argument('--fnym',  help='The psuedonym of the friend you wish to talk', required=True , type = filter_nym)
-    #exchange_key_parser.add_argument('--pk', help='The path to the contact public key file.',required=True,type=file)
-    #exchange_key_parser.add_argument('--sharedkey', help='This is the symmetric key for the encryption and decryption of the message')
-    #exchange_key_parser.add_argument('--label', help='Here is a label ')
-    #exchange_key_parser.add_argument('--bar0',  help='The IP of the BAR server', required=True )
-
-    message_parser.add_argument('--client',  help='The IP of the client you want to send the message', required=True )
-    #message_parser.add_argument('--clientPK',  help='The path to the client public key file.', required=True ,type=file)
-    #message_parser.add_argument('--port',  help='The port to communicate with', required=True )
-    #message_parser.add_argument('--IPy',  help='The IP of the middlle-client you want to pass the message', required=True )
-    #message_parser.add_argument('--bridgePK',  help='The path to the middlle-client bridge public key file.', required=True ,type=file)
-    #message_parser.add_argument('--nymx',  help='The nym of the client you want to send the message first', required=True )
-    message_parser.add_argument('--message',  help='The message you want to send to client', required=True )
-
 
     return parser
 
 BAR0 = "195.251.225.87"#urllib2.urlopen('http://ip.42.pl/raw').read() #put domain name when is uploaded
-
+BAR0_PORT = 443
 def register(args):
 
     args.service = "Register"
-    args.serverport = 443
+    args.serverport = BAR0_PORT
     args.bar0 = BAR0
 
     if not args.nym:
@@ -121,7 +101,7 @@ def register(args):
 
 def login(args):
 
-    args.serverport = 443
+    args.serverport = BAR0_PORT
     args.bar0 = BAR0
     args.service = "LogIn"
     #args.listenport = 0
@@ -151,7 +131,7 @@ def exchange_key(args):
 
     '''
     args.service = "ExchangeKey"
-    args.serverport = 443
+    args.serverport = BAR0_PORT
     args.bar0 = BAR0
 
     if not args.nym:
@@ -174,13 +154,9 @@ def caller(func, args):
 def pybar():
 
     operations = {
-        "register": register ,#{
-                #"newuser" : register_new_user ,
-                #    },
+        "register": register,
         "login":login,
-        #"logout":logout,
-        "exchange_key":exchange_key,
-        #"message":message
+        "exchange_key":exchange_key
     }
 
     parser = parse_cli() # get the parser object

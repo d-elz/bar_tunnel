@@ -1,4 +1,4 @@
-from twisted.internet import ssl, reactor , defer
+from twisted.internet import ssl, reactor
 
 ##### Redirect to TOR Network imports
 from txsocksx.client import SOCKS5ClientEndpoint
