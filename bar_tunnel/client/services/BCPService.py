@@ -79,7 +79,7 @@ class BCPService(baseService):
             return -1
 
         #Get the Cluster(Bar Server of the Uj)
-
+        #test
         # a) Run log in to assign to cluster/Bar[n]
 
         # b) Compute hj to identify the logical
