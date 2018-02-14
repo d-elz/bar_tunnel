@@ -68,16 +68,20 @@ class BarWebProxyClient(proxy.Proxy):
     #requestFactory = BarWebProxyClientRequest
 
     def dataReceived(self,data):
-        print "This is the data for bar server " , data
-        print "Send data to bar net"
+
         args = Namespace()
         args.nym = self.proxy_factory.pseudonym
         args.pk = self.proxy_factory.public_key
         args.bar_server_host = self.proxy_factory.bar_server_host
         args.bar_server_port = self.proxy_factory.bar_server_port
         args.client = "jjj"
-        args.message = data
-        bcp_service(args)
+        if ".bar" not in data:
+            pass
+        else:
+            print "This is the data for bar server ", data
+            print "Send data to bar net"
+            args.message = data
+            bcp_service(args)
     #def lineReceived(self,data):
     #    print "Line "
     #    print data.
