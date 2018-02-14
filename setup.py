@@ -3,7 +3,7 @@ import os
 import sqlite3 as lite
 
 os.makedirs('keys')
-con = lite.connect('bar_tunnel/db/bar.db')
+con = lite.connect('bar_tunnel/db/database.db')
 
 with con:
     cur = con.cursor()
