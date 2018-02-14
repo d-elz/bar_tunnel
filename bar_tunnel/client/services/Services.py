@@ -15,6 +15,16 @@ from txsocksx.tls import TLSWrapClientEndpoint
 
 class baseService():
 
+    def find_path(ex_file, back):
+        dir_of_executable = os.path.dirname(ex_file)
+        path = os.path.abspath(os.path.join(dir_of_executable, back))
+
+    def create_directory(self,ex_file,back,directory_name):
+        if os.path.exists(self.find_path(ex_file,back)):
+            pass
+        else:
+            os.makedirs(directory_name)
+
     def read_file(self ,path):
         f = open(path)   # Make a new file in output mode >>>
         text = f.read()  # Read entire file into a string >>> text 'Hello\nworld\n'

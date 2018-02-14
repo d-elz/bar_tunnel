@@ -22,21 +22,12 @@ def change_directory(ex_file,back,file):
     path = os.path.abspath(os.path.join(dir_of_executable, back)) + file
     return path
 
-def change_directory1(ex_file,back):
-    dir_of_executable = os.path.dirname(ex_file)
-    path = os.path.abspath(os.path.join(dir_of_executable, back))
-    return path
-
 
 def generate_rsa_key(bit):
     path_to_private_key = change_directory(__file__,"../../keys","/private_key.pem")
 
     key = RSA.generate(bit)
-    if os.path.exists(change_directory1(__file__,"../../keys")):
-        f=  open(path_to_private_key,'w')
-    else:
-        os.makedirs(change_directory1(__file__,"../../keys"))
-        f = open(path_to_private_key, 'w')
+    f = open(path_to_private_key, 'w')
     f.write(key.exportKey('PEM'))
     f.close()
 
