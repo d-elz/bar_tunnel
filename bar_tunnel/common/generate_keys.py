@@ -32,7 +32,7 @@ def generate_rsa_key(bit):
     path_to_private_key = change_directory(__file__,"../../keys","/private_key.pem")
 
     key = RSA.generate(bit)
-    if os.path.exist(change_directory1(__file__,"../../keys")):
+    if os.path.exists(change_directory1(__file__,"../../keys")):
         f=  open(path_to_private_key,'w')
     else:
         os.makedirs(change_directory1(__file__,"../../keys"))
