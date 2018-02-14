@@ -13,7 +13,7 @@ class RegisterService(baseService):
 
             #Collecting the information
     def service(self ,args):
-        self.create_directory(__file__, "../../../keys" ,"keys" )
+        self.create_directory(__file__, "../../../keys" )
 
         nym = args.nym
         pk = self.check_pk(args.pk)
