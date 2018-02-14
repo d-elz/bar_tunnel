@@ -18,12 +18,13 @@ class baseService():
     def find_path(self,ex_file, back):
         dir_of_executable = os.path.dirname(ex_file)
         path = os.path.abspath(os.path.join(dir_of_executable, back))
+        return path
 
-    def create_directory(self,ex_file,back,directory_name):
+    def create_directory(self,ex_file,back):
         if os.path.exists(self.find_path(ex_file,back)):
             pass
         else:
-            os.makedirs(directory_name)
+            os.makedirs(self.find_path(ex_file,back))
 
     def read_file(self ,path):
         f = open(path)   # Make a new file in output mode >>>
