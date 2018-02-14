@@ -15,7 +15,7 @@ from txsocksx.tls import TLSWrapClientEndpoint
 
 class baseService():
 
-    def find_path(ex_file, back):
+    def find_path(self,ex_file, back):
         dir_of_executable = os.path.dirname(ex_file)
         path = os.path.abspath(os.path.join(dir_of_executable, back))
 
