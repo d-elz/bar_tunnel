@@ -26,23 +26,38 @@ def generate_rsa_key(bit):
     path_to_private_key = change_directory(__file__,"../../keys","/private_key.pem")
 
     key = RSA.generate(bit)
-    f=  open(path_to_private_key,'w')
+    try:
+        f = open(path_to_private_key, 'r')
+    except IOError:
+        f=  open(path_to_private_key,'w')
     f.write(key.exportKey('PEM'))
     f.close()
 
     path_to_public_key = change_directory(__file__,"../../keys","/public_key.pem")
-    
-    f=  open(path_to_public_key,'w')
+
+    try:
+        f = open(path_to_public_key, 'r')
+    except IOError:
+        f=  open(path_to_public_key,'w')
+
     f.write(key.publickey().exportKey())
     f.close()
 
 def generate_rsa_bridge_key(bit):
     key = RSA.generate(bit)
-    f=  open('keys/bridge_private_key.pem','w')
+    try:
+        f = open('keys/bridge_private_key.pem', 'r')
+    except IOError:
+        f = open('keys/bridge_private_key.pem', 'w')
+
     f.write(key.exportKey('PEM'))
     f.close()
 
-    f=  open('keys/bridge_public_key.pem','w')
+    try:
+        f = open('keys/bridge_public_key.pem', 'r')
+    except IOError:
+        f = open('keys/bridge_public_key.pem', 'w')
+
     f.write(key.publickey().exportKey())
     f.close()
 
