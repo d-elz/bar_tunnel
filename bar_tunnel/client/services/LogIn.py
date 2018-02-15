@@ -83,7 +83,7 @@ def bar_server_conn(bar0_factory):
     BAR_SERVER_PORT = int(bar0_factory.bar_server.split(":")[1])
 
     bar_server_data = "LogIn||||" + str(bar0_factory.login_args.IP)
-    bar_server_factory = ClientToBarServerFactory(bar_server_data , "empty_defer")
+    bar_server_factory = ClientToBarServerFactory(bar_server_data , "empty_defer",bar0_factory.login_args.reactor)
 
     listener_factory = ListenerFactory(reactor, bar_server_factory,bar0_factory.login_args)
 
@@ -123,5 +123,7 @@ def login_service(args):
     login = LogInService()
     login_fil = LogInFilterer()
     login_args = login.service(args)
+    login_args.reactor = reactor
+    print reactor
     login_conn(login_fil.format(login_args),login_args)
     reactor.run()

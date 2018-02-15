@@ -1,6 +1,7 @@
-from twisted.internet import ssl, reactor , defer
-from twisted.internet.protocol import Factory, Protocol ,ClientFactory , ServerFactory
+from twisted.internet import reactor , task
+from twisted.internet.protocol import ClientFactory
 from twisted.protocols.basic import NetstringReceiver
+from threading import Timer
 
 import bar_tunnel.common.aes as aes
 from bar_tunnel.client.operations import DatabaseOperationClient
@@ -11,6 +12,9 @@ import time
 
 ##### Redirect to TOR Network imports
 from argparse import Namespace
+from datetime import datetime
+import schedule
+
 
 buffer = []
 
@@ -35,7 +39,18 @@ class ClientToBarServerProtocol(NetstringReceiver):
         elif self.data[:5] == "LogIn":
             print "~~ Successfull Log In to Bar-Server at " +str(peer)
             self.sendString(self.data)
-            reactor.callInThread(self.delayMessage , self )
+            #self.factory.reactor.callInThread(self.delayMessage , self )
+            #schedu = schedule.Scheduler()
+            #schedu.start()
+            #schedu.add_interval_job(self.delayMessage,seconds=10)
+
+            #import threading
+            #threading.Timer(5.0,self.delayMessage(self)).start()
+            #l = task.LoopingCall(self.delayMessage(self))
+            #l.start(10.0)
+
+            rt = RepeatedTimer(3, self.delayMessage, self)  # it auto-starts, no need of rt.start()
+            self.rt = rt
 
         else:
             print "You must specify a service : [BROADCAST] or [LogIn]"
@@ -96,23 +111,24 @@ class ClientToBarServerProtocol(NetstringReceiver):
         peer = self.transport.getPeer()
         print "Connection failed to Bar-Server" + str(peer)
         print "Reason was : ", reason
-        reactor.stop()
+        #self.factory.reactor.stop()
 
     ## is called when a connection was made and then disconnected
     def connectionLost(self, reason):
         peer = self.transport.getPeer()
         print "~~ Disconnected from Bar-Server at " +str(peer)
         self.transport.loseConnection()
-        #reactor.stop()
+        print self.factory.reactor
+        self.rt.stop()
+        #self.factory.reactor.stop()
 
     def delayMessage(self,connection):
-        while(True):
-            time.sleep(10)
-            if self.bufferIsLoaded():
-                connection.sendString(buffer[0])
-                buffer.remove(buffer[0])
-            else:
-                connection.sendString(self.dummyMessageGenerator())
+
+        if self.bufferIsLoaded():
+            connection.sendString(buffer[0])
+            buffer.remove(buffer[0])
+        else:
+            connection.sendString(self.dummyMessageGenerator())
 
     def bufferIsLoaded(self):
         if len(buffer)==0:
@@ -132,9 +148,10 @@ class ClientToBarServerFactory(ClientFactory):
     def startedConnecting(self, connector):
         print '~~ Start connection to BAR Server ~~'
 
-    def __init__(self , data ,deffered):
+    def __init__(self , data ,deffered,reactor):
         self.data = data
         self.d = deffered
+        self.reactor = reactor
 
     def buildProtocol(self , addr):
         #print "Client To Bar Server Protocol connect"
@@ -168,6 +185,31 @@ def clientTOclient(data,client_host,client_port):
 
 def trigger_bcp(route):
     buffer.append(route)
+
+class RepeatedTimer(object):
+    def __init__(self, interval, function, *args, **kwargs):
+        self._timer     = None
+        self.interval   = interval
+        self.function   = function
+        self.args       = args
+        self.kwargs     = kwargs
+        self.is_running = False
+        self.start()
+
+    def _run(self):
+        self.is_running = False
+        self.start()
+        self.function(*self.args, **self.kwargs)
+
+    def start(self):
+        if not self.is_running:
+            self._timer = Timer(self.interval, self._run)
+            self._timer.start()
+            self.is_running = True
+
+    def stop(self):
+        self._timer.cancel()
+        self.is_running = False
 
 if __name__ == '__main__':
     BarServer()

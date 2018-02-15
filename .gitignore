@@ -1,4 +1,6 @@
 #Bar tunnel ignore files
 
+.idea/
 keys/
 bar_tunnel/db/
+*.pyc
