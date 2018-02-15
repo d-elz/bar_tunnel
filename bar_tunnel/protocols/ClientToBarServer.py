@@ -118,8 +118,7 @@ class ClientToBarServerProtocol(NetstringReceiver):
         peer = self.transport.getPeer()
         print "~~ Disconnected from Bar-Server at " +str(peer)
         self.transport.loseConnection()
-        print self.factory.reactor
-        self.rt.stop()
+        self.rt.stop() # Stopping dummy messager
         #self.factory.reactor.stop()
 
     def delayMessage(self,connection):
@@ -148,10 +147,9 @@ class ClientToBarServerFactory(ClientFactory):
     def startedConnecting(self, connector):
         print '~~ Start connection to BAR Server ~~'
 
-    def __init__(self , data ,deffered,reactor):
+    def __init__(self , data ,deffered):
         self.data = data
         self.d = deffered
-        self.reactor = reactor
 
     def buildProtocol(self , addr):
         #print "Client To Bar Server Protocol connect"
