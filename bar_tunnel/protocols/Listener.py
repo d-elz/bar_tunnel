@@ -66,7 +66,7 @@ class ListenerProtocol(Protocol):
         print "GETTING DATA:"
         base = baseService()
         #decrypt_data , correct_decrypt = rsa.decrypt(self.login.bridge_pk,data)
-        private_key = base.read_file(self.dirc(__file__, "../../../keys", "/private_key.pem"))
+        private_key = base.read_file(base.dirc(__file__, "../../../keys", "/private_key.pem"))
 
         decrypt_data = self.decrypt_message(data, private_key)
 
