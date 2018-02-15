@@ -23,6 +23,8 @@ import bar_tunnel.common.rsa as rsa
 import base64
 import requests
 import json
+
+from bar_tunnel.client.services.Services import baseService
 protoc = "Listener"
 
 class ListenerProtocol(Protocol):
@@ -62,9 +64,9 @@ class ListenerProtocol(Protocol):
 
     def dataReceived(self, data):
         print "GETTING DATA:"
-        
+        base = baseService()
         #decrypt_data , correct_decrypt = rsa.decrypt(self.login.bridge_pk,data)
-        private_key = self.read_file(self.dirc(__file__, "../../../keys", "/private_key.pem"))
+        private_key = base.read_file(self.dirc(__file__, "../../../keys", "/private_key.pem"))
 
         decrypt_data = self.decrypt_message(data, private_key)
 
