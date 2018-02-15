@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd ~/Desktop/bar_env
-source bin/activate
 pip install pyopenssl
 pip install pycrypto
 pip install service_identity
