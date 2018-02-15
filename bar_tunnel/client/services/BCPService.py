@@ -150,19 +150,7 @@ class BCPService(baseService):
         cj = aes.aes_encrypt(args.kij,plaintextj)
         # h) Compute cy = enc-bridge_key-cy[lij,cj] using [id , IPj , b_keyj ] in Active List
         plaintexty = args.lij + "||||" + cj
-        #cy = rsa.encrypt(args.bridge_key_y,plaintexty)
-
-        cy = ""
-        block = plaintexty
-        while len(block) > 0:
-            if len(block) >= 200:
-                enc_block = rsa.encrypt(args.bridge_key_y, block[:200])
-                cy += enc_block + "////"
-
-            else:
-                enc_block = rsa.encrypt(args.bridge_key_y, block)
-                cy += enc_block
-            block = block[200:]
+        cy = rsa.encrypt(args.bridge_key_y,plaintexty)
 
         # i) Encrypt ( [pkx,kix,lix] , k'ix, l'ix , (IPy,Cy) ) to get (lix,cix)
         IP_Cy = args.IPy + "||||" + cy
@@ -176,8 +164,6 @@ class BCPService(baseService):
         #doc.check_update_nym("jjjj","",kij_new,lij_new)
 
         return formated_data
-
-
 
     def format(self , args):
         """

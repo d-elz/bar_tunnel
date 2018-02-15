@@ -18,15 +18,11 @@ import os
 
 #import delay message
 from bar_tunnel.protocols.ClientToBarServer import trigger_bcp
-from bar_tunnel.client.operations import DatabaseOperationClient
+
 import bar_tunnel.common.rsa as rsa
-import base64
 import requests
 import json
-
-from bar_tunnel.client.services.Services import baseService
 protoc = "Listener"
-
 class ListenerProtocol(Protocol):
 
     def __init__(self ,factory,bar_server,bar_server_port,login):
@@ -35,50 +31,19 @@ class ListenerProtocol(Protocol):
         self.factory = factory
         self.login = login
 
-    def decrypt_exchange_messages(self,nymi):
-        exchange_keys = self.get_exchange_keys(nymi)
-        private_key = self.read_file(self.dirc(__file__, "../../../keys" , "/private_key.pem"))
-        for exchange_key in exchange_keys:
-            cij = exchange_key.get("cij")
-            self.decrypt_message(cij,private_key)
+    def dataReceived(self, data):
+        print "GETTING DATA:"
 
-
-    def decrypt_message(self,encrypt_message_b64,private_key):
-        db_client = DatabaseOperationClient()
-        cij =  base64.b64decode(encrypt_message_b64)
-
-        decrypted_message = ""
-        for encrypt_message in cij.split('////'):
-            de_block, correct_decrypt = rsa.decrypt(private_key, encrypt_message)
-            decrypted_message += de_block[:200]
+        decrypt_data , correct_decrypt = rsa.decrypt(self.login.bridge_pk,data)
         if correct_decrypt:
-            nymj = decrypted_message.split("||||")[0]
-            pkj = decrypted_message.split("||||")[1]
-            kij = decrypted_message.split("||||")[2]
-            lij = decrypted_message.split("||||")[3]
-            sij = decrypted_message.split("||||")[4]
-            print "There is the data " , nymj , pkj , kij , lij , sij , decrypted_message
+            print "SENDING TO:" + str(self.bar_server) + ":" + str(self.bar_server_port)
+            #print "BAR Server : " + str(self.bar_server) + ":" + str(self.bar_server_port)
+            #broadcast_message(decrypt_data,self.bar_server,self.bar_server_port)
+            broadcast_data = "BROADCAST||||" + decrypt_data
+            trigger_bcp(broadcast_data)
 
         else:
             print "Wrong key or data!"
-
-    def dataReceived(self, data):
-        print "GETTING DATA:"
-        base = baseService()
-        #decrypt_data , correct_decrypt = rsa.decrypt(self.login.bridge_pk,data)
-        private_key = base.read_file(base.dirc(__file__, "../../keys", "/private_key.pem"))
-
-        decrypt_data = self.decrypt_message(data, private_key)
-
-        #if correct_decrypt:
-        print "SENDING TO:" + str(self.bar_server) + ":" + str(self.bar_server_port)
-        #print "BAR Server : " + str(self.bar_server) + ":" + str(self.bar_server_port)
-        #broadcast_message(decrypt_data,self.bar_server,self.bar_server_port)
-        broadcast_data = "BROADCAST||||" + decrypt_data
-        trigger_bcp(broadcast_data)
-
-        #else:
-        #    print "Wrong key or data!"
 
         self.transport.loseConnection()
 
