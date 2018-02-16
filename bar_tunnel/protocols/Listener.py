@@ -33,7 +33,7 @@ class ListenerProtocol(Protocol):
 
     def dataReceived(self, data):
         print "GETTING DATA:"
-        
+
         decrypt_data , correct_decrypt = rsa.decrypt(self.login.bridge_pk,data)
         if correct_decrypt:
             print "SENDING TO:" + str(self.bar_server) + ":" + str(self.bar_server_port)

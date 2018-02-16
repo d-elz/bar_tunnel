@@ -78,10 +78,14 @@ class BarWebProxyClient(proxy.Proxy):
         if ".bar" not in data:
             pass
         else:
-            print "This is the data for bar server ", data
-            print "Send data to bar net"
-            args.message = data
-            bcp_service(args)
+            if len(data) <= 340:
+                print "This is the data for bar server ", data
+                print "Send data to bar net"
+                args.message = data
+                bcp_service(args)
+                print len(data)
+            else:
+                print "Cant send.Lot of data!"
     #def lineReceived(self,data):
     #    print "Line "
     #    print data.
