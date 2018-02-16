@@ -74,12 +74,13 @@ class BarWebProxyClient(proxy.Proxy):
         args.pk = self.proxy_factory.public_key
         args.bar_server_host = self.proxy_factory.bar_server_host
         args.bar_server_port = self.proxy_factory.bar_server_port
-        args.client = "jjj"
+
         if ".bar" not in data:
             pass
         else:
             if len(data) <= 340:
-                print "This is the data for bar server ", data
+                print "Line : " , data.split("\n")
+                args.client = "jjjj"
                 print "Send data to bar net"
                 args.message = data
                 bcp_service(args)
