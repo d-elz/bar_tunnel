@@ -79,12 +79,13 @@ class BarWebProxyClient(proxy.Proxy):
             pass
         else:
             if len(data) <= 340:
-                print "Line : " , data.split("\n")
-                args.client = "jjjj"
-                print "Send data to bar net"
+                #Get line by line the data , and take the second line the string between Host: and \r , the name of the user
+                clientName = data.split("\n")[1][len("Host: "):-len("\r")][:-4]
+
+                args.client = clientName
+                print "Send data to " +clientName + " client from bar network!"
                 args.message = data
                 bcp_service(args)
-                print len(data)
             else:
                 print "Cant send.Lot of data!"
     #def lineReceived(self,data):
