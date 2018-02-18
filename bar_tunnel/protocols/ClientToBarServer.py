@@ -7,14 +7,16 @@ import bar_tunnel.common.aes as aes
 from bar_tunnel.client.operations import DatabaseOperationClient
 from bar_tunnel.protocols.ClientToClient import ClientToClientFactory , ClientToClientProtocol
 from  bar_tunnel.protocols.BarWebProxyServer import BarWebProxyServerFactory
-
+from bar_tunnel.client.operations import DatabaseOperationClient
 import time
-
+import bar_tunnel.common.rsa as rsa
 ##### Redirect to TOR Network imports
 from argparse import Namespace
 from datetime import datetime
+from bar_tunnel.client.services.Services import baseService
 
-
+import string
+import random
 
 buffer = []
 
@@ -135,9 +137,16 @@ class ClientToBarServerProtocol(NetstringReceiver):
         else:
             return True
 
+    def string_generator(self,size,chars=string.ascii_lowercase + string.digits):
+        return ''.join(random.choice(chars) for _ in range(size))
+
     def dummyMessageGenerator(self):
-        #constructing_route = format()
-        broadcast_data = "BROADCAST||||" + "COnstruction the oonion routin dummy message"
+        doc = DatabaseOperationClient()
+        #A dummy message generator.Generate a 600 digit arbitary string for constructing a stream of 761 bytes .
+        dummy_message = self.string_generator(641)
+
+        cx = aes.aes_encrypt(doc.gen_key(), dummy_message)
+        broadcast_data = "BROADCAST||||" + doc.gen_key()+"||||"+cx
         return broadcast_data
 
 

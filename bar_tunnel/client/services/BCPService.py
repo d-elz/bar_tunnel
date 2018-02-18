@@ -186,7 +186,6 @@ def bcp_conn(bcp_args):
     if constructing_route != -1:
         broadcast_data = "BROADCAST||||" + constructing_route
         trigger_bcp(broadcast_data)
-        #reactor.connectTCP(bcp_args.bar_server_host,int(bcp_args.bar_server_port),bar_server_factory)
     else:
         print "Something not works in bar route construction"
 
