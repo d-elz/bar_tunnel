@@ -104,7 +104,7 @@ class ExchangeKeyService(baseService):
             lij = decrypted_message.split("||||")[4]
             sij = decrypted_message.split("||||")[5]
             verification_data = nymi +"||||"+ pki +"||||"+ pkj +"||||"+ kij +"||||"+ lij
-            if (signature.verify(verification_data,self.dirc(__file__, "../../../keys" , "/private_key.pem"),sij) ):
+            if (signature.verify(verification_data,pki,sij) ):
                 db_client.check_update_nym(nymi,pki,lij,kij)
         else:
             print "Wrong key or data!"
