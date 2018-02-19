@@ -9,6 +9,8 @@ from bar_tunnel.client.services.ExchangeKey import exchange_key_service
 
 import re
 
+from bar_tunnel.client.services.Services import baseService
+
 def parse_cli():
 
     #Function to filter and accepto only 3 15 character names and alphanumeric pseudonyms
@@ -22,6 +24,12 @@ def parse_cli():
             print "You must reg a nym between 3 and 15 characters"
             return None
 
+    def filter_delay(delay):
+        if delay < 1 and delay > 20:
+            pass
+        else:
+            print "You must give a delay between 1 and 20 seconds"
+            return None
 
     parser = argparse.ArgumentParser(
     prog = "Bar Tunnel", # %(prog)s : used to display the prog variable whenever you want
@@ -70,10 +78,11 @@ Start Tor first "sudo systemctl start tor "
 
     #newuser_register_parser = subparsers.add_parser('newuser', help='Subparser for registring a new user.')
 
-    login_parser.add_argument('--nym',  help='Your own unique pseudonym to login to Bar server', required=True , type = filter_nym)
-    login_parser.add_argument('--pk', help='The path of your public key file.If you didn t import it -we did- and is inside keys folder',required=True,type=file)
+    login_parser.add_argument('--nym',  help='Your own unique pseudonym to login to Bar server' , type = filter_nym)
+    login_parser.add_argument('--pk', help='The path of your public key file.If you didn t import it -we did- and is inside keys folder',type=file)
     login_parser.add_argument('--listenport', help='This is the port for CLient to CLiet communication to forward the message to bar server',type=int)
     login_parser.add_argument('--proxyport', help='This is the proxy port for the bcp connection',type=int)
+    login_parser.add_argument('--delaymessage', help='Give the gummy messager delay in seconds', type=int)
 
     exchange_key_parser.add_argument('--nym',  help='Your own unique pseudonym to register/login to Bar server', required=True , type = filter_nym)
     exchange_key_parser.add_argument('--fnym',  help='The psuedonym of the friend you wish to talk', required=True , type = filter_nym)
@@ -105,18 +114,22 @@ def login(args):
     args.bar0 = BAR0
     args.service = "LogIn"
     #args.listenport = 0
+    baseS = baseService()
 
     if not args.nym:
-        print "You need to specify a pseudonym with --nym. Aborting..."
-        return
+        args.nym = baseS.read_file(baseS.dirc(__file__,"../keys","/pseudonym"))
 
     if not args.pk:
-        print "You need to specify a public key path file with --pk. Aborting..."
-        return
+        args.pk = baseS.read_file(baseS.dirc(__file__, "../keys", "/public_key.pem"))
+    else:
+        args.pk = baseS.read_file(args.pk.name)
 
     if not args.proxyport:
         print "You need to specify a proxyport  with --proxyport. Aborting..."
         return
+
+    if not args.delaymessage:
+        args.delaymessage = 5
 
 
     #if not args.listenport:

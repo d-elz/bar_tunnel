@@ -51,7 +51,7 @@ class ClientToBarServerProtocol(NetstringReceiver):
             #l = task.LoopingCall(self.delayMessage(self))
             #l.start(10.0)
 
-            rt = RepeatedTimer(3, self.delayMessage, self)  # it auto-starts, no need of rt.start()
+            rt = RepeatedTimer(self.factory.delay, self.delayMessage, self)  # it auto-starts, no need of rt.start()
             self.rt = rt
 
         else:
@@ -156,8 +156,9 @@ class ClientToBarServerFactory(ClientFactory):
     def startedConnecting(self, connector):
         print '~~ Start connection to BAR Server ~~'
 
-    def __init__(self , data ,deffered):
+    def __init__(self , data ,deffered , delay):
         self.data = data
+        self.delay = delay
         self.d = deffered
 
     def buildProtocol(self , addr):

@@ -45,7 +45,7 @@ class LogInService(baseService):
             #the other functions
     def service(self ,args):
         nym = args.nym
-        pk = self.read_file(args.pk.name)
+        pk = args.pk
 
         #Obtain the public params M , m , Nmin , Nmax
             #Optional
@@ -74,6 +74,7 @@ class LogInService(baseService):
         args_info.cluster = cluster
         args_info.serverport = args.serverport
         args_info.bar0 = args.bar0
+        args_info.delaymessage = args.delaymessage
 
         return args_info
 
@@ -83,7 +84,7 @@ def bar_server_conn(bar0_factory):
     BAR_SERVER_PORT = int(bar0_factory.bar_server.split(":")[1])
 
     bar_server_data = "LogIn||||" + str(bar0_factory.login_args.IP)
-    bar_server_factory = ClientToBarServerFactory(bar_server_data , "empty_defer")
+    bar_server_factory = ClientToBarServerFactory(bar_server_data , "empty_defer" , bar0_factory.login_args.delaymessage)
 
     listener_factory = ListenerFactory(reactor, bar_server_factory,bar0_factory.login_args)
 
