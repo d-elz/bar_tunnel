@@ -20,9 +20,9 @@ def sign(msg,private_key_path):
     sign = base64.b64encode(signature) # encode dta to easily manipulated
     return sign
 
-def verify(msg,public_key_path,signature):
+def verify(msg,public_key,signature):
     sign= base64.b64decode(signature) # decode the data
-    key = RSA.importKey(open(public_key_path).read())
+    key = RSA.importKey(public_key)
     h = SHA.new(msg)
     verifier = PKCS1_v1_5.new(key)
     if verifier.verify(h, sign):
