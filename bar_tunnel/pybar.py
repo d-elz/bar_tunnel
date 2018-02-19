@@ -84,7 +84,7 @@ Start Tor first "sudo systemctl start tor "
     login_parser.add_argument('--proxyport', help='This is the proxy port for the bcp connection',type=int)
     login_parser.add_argument('--delaymessage', help='Give the gummy messager delay in seconds', type=int)
 
-    exchange_key_parser.add_argument('--nym',  help='Your own unique pseudonym to register/login to Bar server', required=True , type = filter_nym)
+    exchange_key_parser.add_argument('--nym',  help='Your own unique pseudonym to register/login to Bar server',  type = filter_nym)
     exchange_key_parser.add_argument('--fnym',  help='The psuedonym of the friend you wish to talk', required=True , type = filter_nym)
 
     return parser
@@ -146,10 +146,10 @@ def exchange_key(args):
     args.service = "ExchangeKey"
     args.serverport = BAR0_PORT
     args.bar0 = BAR0
+    baseS = baseService()
 
     if not args.nym:
-        print "You need to specify a pseudonym with --nym. Aborting..."
-        return
+        args.nym = baseS.read_file(baseS.dirc(__file__, "../keys", "/pseudonym"))
 
 
     if not args.fnym:
