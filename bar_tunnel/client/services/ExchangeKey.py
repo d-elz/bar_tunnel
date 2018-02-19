@@ -38,7 +38,7 @@ class ExchangeKeyService(baseService):
         pkj=""
         for public_user in public_users:
             if public_user.get("nym") == nymj:
-                pkj = public_user.get("pk")
+                pkj = str(public_user.get("pk"))
                 break
 
         if not pkj:
@@ -49,7 +49,7 @@ class ExchangeKeyService(baseService):
         kij = self.gen_key()
         private_key = self.dirc(__file__, "../../../keys" , "/private_key.pem")
 
-        exchange_staff = nymi + "||||" + pki + "||||" + pkj + "||||" + lij + "||||" + kij
+        exchange_staff = nymi + "||||" + pki + "||||" + pkj + "||||" + kij + "||||" + lij
 
         ##### (a)If the entry is validate
         # Choose a random label lij and a key kij
@@ -59,7 +59,7 @@ class ExchangeKeyService(baseService):
         sij = signature.sign(exchange_staff,private_key)
 
         #CAnt make his block of code a function , problem with the lenght of the plaintext "too long"
-        plaintext = nymi +"||||"+ pki +"||||"+ kij +"||||"+ lij +"||||"+ sij
+        plaintext = nymi +"||||"+ pki +"||||"+ pkj +"||||"+ kij +"||||"+ lij +"||||"+ sij
 
         cij = ""
         block = plaintext
@@ -97,14 +97,15 @@ class ExchangeKeyService(baseService):
             de_block, correct_decrypt = rsa.decrypt(private_key, encrypt_message)
             decrypted_message += de_block[:200]
         if correct_decrypt:
-            nymj = decrypted_message.split("||||")[0]
-            pkj = decrypted_message.split("||||")[1]
-            kij = decrypted_message.split("||||")[2]
-            lij = decrypted_message.split("||||")[3]
-            sij = decrypted_message.split("||||")[4]
-            print "There is the data " , nymj , pkj , kij , lij , sij , decrypted_message
-            #if (signature.verify(decrypted_message,self.dirc(__file__, "../../../keys" , "/private_key.pem"),sij) ):
-            db_client.check_update_nym(nymj,pkj,lij,kij)
+            nymi = decrypted_message.split("||||")[0]
+            pki = decrypted_message.split("||||")[1]
+            pkj = decrypted_message.split("||||")[2]
+            kij = decrypted_message.split("||||")[3]
+            lij = decrypted_message.split("||||")[4]
+            sij = decrypted_message.split("||||")[5]
+            verification_data = nymi +"||||"+ pki +"||||"+ pkj +"||||"+ kij +"||||"+ lij
+            if (signature.verify(verification_data,self.dirc(__file__, "../../../keys" , "/private_key.pem"),sij) ):
+                db_client.check_update_nym(nymi,pki,lij,kij)
         else:
             print "Wrong key or data!"
 
