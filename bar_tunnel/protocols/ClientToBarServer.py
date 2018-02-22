@@ -32,6 +32,7 @@ class ClientToBarServerProtocol(NetstringReceiver):
     def connectionMade(self):
         peer = self.transport.getPeer()
         host = self.transport.getHost()
+        self.count_received_messages = 0
         print "~~ Connected to Bar-Server at " +str(peer)
 
         if self.data[:9] == "BROADCAST":
@@ -53,7 +54,8 @@ class ClientToBarServerProtocol(NetstringReceiver):
 
         #Filter the data to get only if the lij and the encryption fit the user
         doc = DatabaseOperationClient()
-        print "GETTING MESSAGE: " + data
+
+        print str(self.count_received_messages) +".GETTING MESSAGE: Encrypted Data"
         row = doc.select_list(data.split("||||")[0])
         if row: #if the label is in the List continue
                     #Decrypt ([pki,kix,lix]; <lix,cx>) to get ki'x , li'x ,lix,IPy|cy
@@ -92,7 +94,8 @@ class ClientToBarServerProtocol(NetstringReceiver):
 
         else:
             print "This message isn t for you .Dropping.."
-
+            print "--------------------------------------"
+        self.count_received_messages = self.count_received_messages + 1
         #self.transport.loseConnection()
 
     def broadcast_message(self,bar_server,data):
