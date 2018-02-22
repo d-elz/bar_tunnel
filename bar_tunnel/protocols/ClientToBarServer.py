@@ -41,16 +41,6 @@ class ClientToBarServerProtocol(NetstringReceiver):
         elif self.data[:5] == "LogIn":
             print "~~ Successfull Log In to Bar-Server at " +str(peer)
             self.sendString(self.data)
-            #self.factory.reactor.callInThread(self.delayMessage , self )
-            #schedu = schedule.Scheduler()
-            #schedu.start()
-            #schedu.add_interval_job(self.delayMessage,seconds=10)
-
-            #import threading
-            #threading.Timer(5.0,self.delayMessage(self)).start()
-            #l = task.LoopingCall(self.delayMessage(self))
-            #l.start(10.0)
-
             rt = RepeatedTimer(self.factory.delay, self.delayMessage, self)  # it auto-starts, no need of rt.start()
             self.rt = rt
 

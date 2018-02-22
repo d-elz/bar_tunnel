@@ -1,4 +1,4 @@
-from twisted.internet import  reactor
+from twisted.internet import  reactor , ssl
 
 
 #Our repositories
@@ -13,8 +13,6 @@ class RegisterService(baseService):
 
             #Collecting the information
     def service(self ,args):
-        #self.create_directory(__file__, "../../../keys" )
-
         nym = args.nym
         pk = self.check_pk(args.pk)
 
@@ -32,6 +30,7 @@ def register_conn(data_to_send,register_args):
     base= baseService()
     factory = ClientToBar0Factory(data_to_send,"empty_defer","") # without a defer
     base.TLS_TOR_conn(register_args.bar0,register_args.serverport).connect(factory)
+    #reactor.connectSSL(register_args.bar0,register_args.serverport,factory,ssl.ClientContextFactory()) #for testing
 
 def register_service(args):
     register = RegisterService()

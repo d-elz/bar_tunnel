@@ -59,7 +59,9 @@ class LogInService(baseService):
         bridge_pk = self.read_file(self.dirc(__file__, "../../../keys" , "/bridge_private_key.pem"))
 
         # (d)Send the IPi , bridge key Bari.Clusteri
-        IP = urllib2.urlopen('http://ip.42.pl/raw').read() + ":" + str(args.listenport)
+        #IP = urllib2.urlopen('http://ip.42.pl/raw').read() + ":" + str(args.listenport)
+        IP = urllib2.urlopen('http://api.ipify.org/').read() + ":" + str(args.listenport)
+
         args.IP = IP
 
         #Returning information
@@ -94,13 +96,13 @@ def bar_server_conn(bar0_factory):
     bar_server_factory.set_listener(listener_factory)
     listener = reactor.listenTCP(bar0_factory.login_args.listenport, listener_factory)
 
-    #Create a login object to inherita some neccesary function
+    #Get the exchange keys from the bulletin board
     loginserobject = LogInService()
     exchange_key = ExchangeKeyService()
     pseudonym = loginserobject.read_file(loginserobject.dirc(__file__, "../../../keys", "/pseudonym"))
     exchange_key.decrypt_exchange_messages(pseudonym)
 
-    #Proxy LIstener for Browser connection over HTTP
+    #Proxy Listener for Browser connection over HTTP
     proxyFaxtory = BarWebProxyFactory()
     proxyFaxtory.set_pseudonym(bar0_factory.login_args.nym)
     proxyFaxtory.set_public_key(bar0_factory.login_args.pk)

@@ -116,6 +116,7 @@ def login(args):
     #args.listenport = 0
     baseS = baseService()
 
+    #Put an exception somewhere here!
     if not args.nym:
         args.nym = baseS.read_file(baseS.dirc(__file__,"../keys","/pseudonym"))
 
