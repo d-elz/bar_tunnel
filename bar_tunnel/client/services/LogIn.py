@@ -61,7 +61,6 @@ class LogInService(baseService):
         # (d)Send the IPi , bridge key Bari.Clusteri
         #IP = urllib2.urlopen('http://ip.42.pl/raw').read() + ":" + str(args.listenport)
         IP = urllib2.urlopen('http://api.ipify.org/').read() + ":" + str(args.listenport)
-
         args.IP = IP
 
         #Returning information
