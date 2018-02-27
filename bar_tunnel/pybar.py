@@ -36,17 +36,6 @@ def parse_cli():
     usage = """%(prog)s ->"""
 ,
 description="""
-
-          #########              #########          #########
-        #         ##           # ####### #         #         #
-       #         ##          # # ##### # #        #         #
-      # #######            # # # ### # # #       #########
-     #         ##        # # # # # # # # #      # #
-    #          ##      # # #         # # #     #   #
-   #         ##      # # #   TUNNEL  # # #    #     #
-  ###########      # # #             # # #   #       #
-
-
 This is a bar client . Follow the commands to register to Bar Network
 
 python2  bin/register --nym Darth Yoda --pk_file /home/path/to/pk/file
@@ -89,10 +78,25 @@ Start Tor first "sudo systemctl start tor "
 
     return parser
 
+def logo():
+    print""
+    print"        #########              #########          #########"
+    print"      #         ##           # ####### #         #         #"
+    print"     #         ##          # # ##### # #        #         #"
+    print"    # #######            # # # ### # # #       #########"
+    print"   #         ##        # # # # # # # # #      # #"
+    print"  #          ##      # # #         # # #     #   #"
+    print" #         ##      # # #   TUNNEL  # # #    #     #"
+    print"###########      # # #             # # #   #       #"
+
+def help(service):
+    print"Strating " + service + "Service"
+    if service == "LogIn":
+        print "To LogOut press ^C"
+
 BAR0 = "bar0.cs.unipi.gr"#urllib2.urlopen('http://ip.42.pl/raw').read() #put domain name when is uploaded
 BAR0_PORT = 443
 def register(args):
-
     args.service = "Register"
     args.serverport = BAR0_PORT
     args.bar0 = BAR0
@@ -105,11 +109,10 @@ def register(args):
         public_key = open(args.pk.name)   # Make a new file in output mode >>>
         args.pk = public_key.read()
 
-
+    help(args.service)
     register_service(args)
 
 def login(args):
-
     args.serverport = BAR0_PORT
     args.bar0 = BAR0
     args.service = "LogIn"
@@ -136,8 +139,7 @@ def login(args):
     #if not args.listenport:
     #    print "You need to specify a listener port for CLient to CLiet communication. Aborting..."
     #    return
-
-
+    help(args.service)
     login_service(args)
 
 def exchange_key(args):
@@ -156,7 +158,7 @@ def exchange_key(args):
     if not args.fnym:
         print "You need to specify a public key path file with --pk. Aborting..."
         return
-
+    help(args.service)
     exchange_key_service(args)
 
 
@@ -166,7 +168,7 @@ def caller(func, args):
 
 
 def pybar():
-
+    logo()
     operations = {
         "register": register,
         "login":login,

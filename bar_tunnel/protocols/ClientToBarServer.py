@@ -136,8 +136,12 @@ class ClientToBarServerProtocol(NetstringReceiver):
     def dummyMessageGenerator(self):
         doc = DatabaseOperationClient()
         #A dummy message generator.Generate a 600 digit arbitary string for constructing a stream of 761 bytes .
-        dummy_message = self.string_generator(641)
 
+        random_byte_list = [643,random.randrange(100,643,1)]
+        print random_byte_list
+        random_packet_bytes = random.choice(random_byte_list)
+        print random_packet_bytes
+        dummy_message = self.string_generator(random_packet_bytes)
         cx = aes.aes_encrypt(doc.gen_key(), dummy_message)
         broadcast_data = "BROADCAST||||" + doc.gen_key()+"||||"+cx
         return broadcast_data
