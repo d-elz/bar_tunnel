@@ -62,6 +62,8 @@ Start Tor first "sudo systemctl start tor "
 
     register_parser.add_argument('--nym',  help='Your own unique pseudonym to register to Bar server', required=True , type = filter_nym)
     register_parser.add_argument('--pk', help='The path of your public key file . If you dont have leave it blank to auto genarate a key pair for you',type=file)
+    register_parser.add_argument('--barserver',help='THe name of the server you want to register', required=True)
+
     #register_parser.add_argument('--bar0',  help='The IP of the BAR server', required=True )
     #subparsers = register_parser.add_subparsers(help='sub-command help', dest='register_operation')
 

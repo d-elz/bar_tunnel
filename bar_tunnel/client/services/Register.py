@@ -15,6 +15,8 @@ class RegisterService(baseService):
     def service(self ,args):
         nym = args.nym
         pk = self.check_pk(args.pk)
+        while self.compute_cluster(nym,pk) != args.barserver:
+            pk = self.check_pk(args.pk)
 
         self.write_file( self.dirc(__file__, "../../../keys" , "/pseudonym" ) , nym )
         args_info = Namespace()
