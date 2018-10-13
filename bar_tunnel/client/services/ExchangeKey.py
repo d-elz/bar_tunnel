@@ -113,7 +113,7 @@ class ExchangeKeyService(baseService):
     def get_exchange_keys(self,nym):
         # use domain name insted(django project)
 
-        url = 'http://' + self.DOMAIN+ '/bar/exchange_client?nym=' + nym
+        url = 'http://' + self.DOMAIN+ '/bar/exchange_client/?nym=' + nym
 
         r = requests.get(url)
         exchange_keys = json.loads(r.content)
