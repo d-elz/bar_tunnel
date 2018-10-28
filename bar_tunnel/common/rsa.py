@@ -60,10 +60,10 @@ if __name__ == "__main__":
 
     message = "PAranoia is total awareness" # Can decrypt with 4096 bit key almost 430 and with 2048 almost 225
     print message
-    public_key = read_file('/home/bar/Desktop/bar_tunnel/keys/public_key.pem')
-    private_key = read_file('/home/bar/Desktop/bar_tunnel/keys/private_key.pem')
+    public_key = read_file('C:/Users/Gus/Desktop/barEnvCrypto/bar_tunnel/keys/public_key.pem')
+    private_key = read_file('C:/Users/Gus/Desktop/barEnvCrypto/bar_tunnel/keys/private_key.pem')
     print public_key , private_key
-    ciphertext = encrypt(public_key,message)
+    ciphertext = encryption(public_key,message)
     print "Encrypt : " + ciphertext
-    decrypt = decrypt(private_key , ciphertext)
+    decrypt = decryption(private_key , ciphertext)
     print "Decrypt : " , decrypt

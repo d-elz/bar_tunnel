@@ -1,20 +1,39 @@
-from Crypto.Cipher import AES
 import base64
+import hashlib
+from Crypto import Random
+from Crypto.Cipher import AES
 
-def aes_encrypt(skey, m):
-    '''
-    Encrypt given message with shared key.
-    '''
-    iv = '\x00' * 16
-    stream = AES.new(skey, AES.MODE_CFB, iv)
-    #ciphertext_b64 =  base64.b64encode(stream.encrypt(m))
-    return stream.encrypt(m)
 
-def aes_decrypt(skey, c):
-    '''
-    Decrypt given message with shared key.
-    '''
-    #plaintext64 =  base64.b64encode(c)
-    iv = '\x00' * 16
-    stream=AES.new(skey, AES.MODE_CFB, iv)
-    return stream.decrypt(c)
+class AESCipher(object):
+    def __init__(self, key):
+        self.bs = 32
+        self.key = hashlib.sha256(key.encode()).digest()
+
+    def aes_encrypt(self, raw):
+        raw = self._pad(raw)
+        iv = Random.new().read(AES.block_size)
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        return iv + cipher.encrypt(raw)
+
+    def aes_decrypt(self, enc):
+        iv = enc[:AES.block_size]
+        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode('utf-8')
+
+    def _pad(self, s):
+        print "pad " + str(s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs))
+        print len(s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs))
+        return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
+
+    @staticmethod
+    def _unpad(s):
+        return s[:-ord(s[len(s) - 1:])]
+
+
+if __name__ == "__main__":
+    aes = AESCipher(Random.new().read(1234).encode("hex"))
+    ciphertext = aes.aes_encrypt("aiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+    print ciphertext
+    print len(ciphertext)
+    print aes.aes_decrypt(ciphertext)
+    print "hello"
