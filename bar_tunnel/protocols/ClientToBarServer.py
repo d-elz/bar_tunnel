@@ -140,9 +140,9 @@ class ClientToBarServerProtocol(NetstringReceiver):
         random_byte_list = [643,random.randrange(100,643,1)]
 
         random_packet_bytes = random.choice(random_byte_list)
-
+        aesAlgo = aes.AESCipher(doc.gen_key())
         dummy_message = self.string_generator(random_packet_bytes)
-        cx = aes.aes_encrypt(doc.gen_key(), dummy_message)
+        cx = aesAlgo.aes_encrypt( dummy_message)
         broadcast_data = "BROADCAST||||" + doc.gen_key()+"||||"+cx
         return broadcast_data
 
