@@ -60,7 +60,8 @@ class ClientToBarServerProtocol(NetstringReceiver):
         if row: #if the label is in the List continue
                     #Decrypt ([pki,kix,lix]; <lix,cx>) to get ki'x , li'x ,lix,IPy|cy
             print "DECRYPTING MESSAGE:"
-            plaintext = aes.aes_decrypt(row[0]["shared_key"] , data.split("||||")[1] )
+            aesAlgoD = aes.AESCipher(row[0]["shared_key"])
+            plaintext = aesAlgoD.aes_decrypt( data.split("||||")[1] )
             #If the encrypted message has 5 variables e.g [ ki'x , li'x ,lix, IPy, cy]
             #then you are the first node of the BCP routing
             if len(plaintext.split("||||"))  == 5:

@@ -147,7 +147,8 @@ class BCPService(baseService):
         # g) Encrypt ( [pkj,kij,lij] , k'ij, l'ij , m ) to get (lij,cij)
         plaintextj = args.lij + "||||"+ args.lij_new + "||||"+ args.kij_new +  "||||" + message
 
-        cj = aes.aes_encrypt(args.kij,plaintextj)
+        aesAlgoJ = aes.AESCipher(args.kij)
+        cj = aesAlgoJ.aes_encrypt(plaintextj)
         # h) Compute cy = enc-bridge_key-cy[lij,cj] using [id , IPj , b_keyj ] in Active List
         plaintexty = args.lij + "||||" + cj
         cy = rsa.encrypt(args.bridge_key_y,plaintexty)
@@ -155,7 +156,8 @@ class BCPService(baseService):
         # i) Encrypt ( [pkx,kix,lix] , k'ix, l'ix , (IPy,Cy) ) to get (lix,cix)
         IP_Cy = args.IPy + "||||" + cy
         plaintextx = args.kix_new + "||||"+ args.lix_new + "||||"+ args.lix +  "||||" + IP_Cy
-        cx = aes.aes_encrypt(args.kix,plaintextx)
+        aesAlgoX = aes.AESCipher(args.kix)
+        cx = aesAlgoX.aes_encrypt(plaintextx)
 
         # j) Broadcast (lix,cix)
         formated_data =  args.lix + "||||" + cx # args.service + "|" + nymj + "|" + cij
