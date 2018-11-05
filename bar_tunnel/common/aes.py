@@ -18,7 +18,7 @@ class AESCipher(object):
     def aes_decrypt(self, enc):
         iv = enc[:AES.block_size]
         cipher = AES.new(self.key, AES.MODE_CFB, iv)
-        return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode('utf-8')
+        return self._unpad(cipher.decrypt(enc[AES.block_size:]))#.decode('utf-8')
 
     def _pad(self, s):
         return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
