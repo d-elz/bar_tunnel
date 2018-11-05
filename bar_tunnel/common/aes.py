@@ -12,17 +12,15 @@ class AESCipher(object):
     def aes_encrypt(self, raw):
         raw = self._pad(raw)
         iv = Random.new().read(AES.block_size)
-        cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return str(iv + cipher.encrypt(raw))
+        cipher = AES.new(self.key, AES.MODE_CFB, iv)
+        return iv + cipher.encrypt(raw)
 
     def aes_decrypt(self, enc):
         iv = enc[:AES.block_size]
-        cipher = AES.new(self.key, AES.MODE_CBC, iv)
+        cipher = AES.new(self.key, AES.MODE_CFB, iv)
         return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode('utf-8')
 
     def _pad(self, s):
-        print "pad " + str(s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs))
-        print len(s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs))
         return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs)
 
     @staticmethod
