@@ -76,7 +76,7 @@ class ClientToBarServerProtocol(NetstringReceiver):
                 client_host =CLIENT_IP.split(":")[0]
                 client_port = int(CLIENT_IP.split(":")[1])
                 print "SENDING TO CLIENT:" ,CLIENT_IP
-                clientTOclient(plaintext.split("||||")[4],str(client_host),client_port)
+                clientTOclient(plaintext.split("||||")[4],client_host,client_port)
             #if the encrypted message hasn t got 5  variables you are the receiver
             else:
                 if data.split("||||")[0] == plaintext.split("||||")[0]:

@@ -13,7 +13,7 @@ class AESCipher(object):
         raw = self._pad(raw)
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(self.key, AES.MODE_CBC, iv)
-        return iv + cipher.encrypt(raw)
+        return str(iv + cipher.encrypt(raw))
 
     def aes_decrypt(self, enc):
         iv = enc[:AES.block_size]
