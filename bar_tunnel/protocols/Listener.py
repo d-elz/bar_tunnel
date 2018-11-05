@@ -34,7 +34,7 @@ class ListenerProtocol(Protocol):
     def dataReceived(self, data):
         print "GETTING DATA:"
 
-        decrypt_data , correct_decrypt = rsa.decrypt(self.login.bridge_pk,data)
+        decrypt_data , correct_decrypt = self.decrypt_message(self.login.bridge_pk,data)
         if correct_decrypt:
             print "SENDING TO:" + str(self.bar_server) + ":" + str(self.bar_server_port)
             #print "BAR Server : " + str(self.bar_server) + ":" + str(self.bar_server_port)
@@ -76,6 +76,21 @@ class ListenerProtocol(Protocol):
         print "~~ "+protoc+" Disconnected from Client at " +str(peer)
         self.transport.loseConnection()
 
+    def decrypt_message(self,private_key,encrypt_message_b64):
+        cy =  base64.b64decode(encrypt_message_b64)
+
+        decrypted_message = ""
+        for encrypt_message in cy.split('////'):
+            de_block, correct_decrypt = rsa.decrypt(private_key, encrypt_message)
+            decrypted_message += de_block[:200]
+        if correct_decrypt:
+            lij = decrypted_message.split("||||")[0]
+            cj = decrypted_message.split("||||")[1]
+            verification_data = lij +"||||"+ cj
+            return verification_data , True
+        else:
+            print "Wrong key or data!"
+            return "nothing",False
 
 class ListenerFactory(ServerFactory):
 
