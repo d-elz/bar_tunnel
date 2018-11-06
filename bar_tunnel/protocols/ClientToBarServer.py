@@ -138,7 +138,8 @@ class ClientToBarServerProtocol(NetstringReceiver):
         doc = DatabaseOperationClient()
         #A dummy message generator.Generate a 600 digit arbitary string for constructing a stream of 761 bytes .
 
-        random_byte_list = [643,random.randrange(100,643,1)]
+        #random_byte_list = [643,random.randrange(100,643,1)]
+        random_byte_list = [2193]
 
         random_packet_bytes = random.choice(random_byte_list)
         aesAlgo = aes.AESCipher(doc.gen_key())
