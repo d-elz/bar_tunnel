@@ -4,17 +4,7 @@ from twisted.protocols.basic import NetstringReceiver
 
 from bar_tunnel.protocols.ClientToBarServer import ClientToBarServerFactory , ClientToBarServerProtocol
 
-##### Redirect to TOR Network imports
-from txsocksx.client import SOCKS5ClientEndpoint
-from twisted.internet.endpoints import TCP4ClientEndpoint , SSL4ClientEndpoint
-
-from txtorcon import endpoints as tor_endpoint
-##### SSL - TLS import
-from txsocksx.tls import TLSWrapClientEndpoint
-
-import time
-import optparse
-import os
+import base64
 
 #import delay message
 from bar_tunnel.protocols.ClientToBarServer import trigger_bcp
